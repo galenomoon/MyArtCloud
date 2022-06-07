@@ -18,7 +18,13 @@ import Write from './src/pages/Write';
 
 export default function App() {
   const Tab = createBottomTabNavigator();
-
+  const styles = StyleSheet.create({
+    label: {
+      fontSize: 13,
+      color: '#000'
+    } 
+  })
+  
   const tabConfig = {
     "login": {
       headerShown: false,
@@ -39,20 +45,13 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Login" options={tabConfig.login} component={Login} />
-        <Tab.Screen name="Home" options={tabConfig.home} component={Home} />
-        <Tab.Screen name="Write" options={tabConfig.write} component={Write} />
-      </Tab.Navigator>
-    </NavigationContainer>
+     <NavigationContainer>
+       <Tab.Navigator>
+         <Tab.Screen name="Login" options={tabConfig.login} component={Login} />
+         <Tab.Screen name="Home" options={tabConfig.home} component={Home} />
+         <Tab.Screen name="Write" options={tabConfig.write} component={Write} />
+       </Tab.Navigator>
+     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  label: {
-    fontSize: 13,
-    color: '#000'
-  } 
-})
 
