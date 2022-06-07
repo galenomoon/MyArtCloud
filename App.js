@@ -1,21 +1,58 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import firebase from './src/firebaseConection';
+//react-navigation
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+//styles
+import { StyleSheet, Text, View, Button, Image, TouchableOpacity, ScrollView, FlatList } from 'react-native';
+import { FaUser, FaHome, FaPenAlt } from 'react-icons/fa';
+
+//firebase
+import app from './src/firebaseConection';
+import { getDatabase } from 'firebase/database';
+
+//components
+import Login from './src/pages/Login';
+import Home from './src/pages/Home';
+import Write from './src/pages/Write';
+
 
 export default function App() {
+  const Tab = createBottomTabNavigator();
+
+  const tabConfig = {
+    "login": {
+      headerShown: false,
+      tabBarIcon: () => <FaUser size={30} />,
+      tabBarLabel: "Entrar",
+      tabBarLabelStyle: styles.label
+    },
+    "home": {
+      tabBarIcon: () => <FaHome size={30} />,
+      tabBarLabel: "Home",
+      tabBarLabelStyle: styles.label
+    },
+    "write": {
+      tabBarIcon: () => <FaPenAlt size={30}  />,
+      tabBarLabel: "Escrever",
+      tabBarLabelStyle: styles.label
+    }
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Tab.Navigator>
+        <Tab.Screen name="Login" options={tabConfig.login} component={Login} />
+        <Tab.Screen name="Home" options={tabConfig.home} component={Home} />
+        <Tab.Screen name="Write" options={tabConfig.write} component={Write} />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  label: {
+    fontSize: 13,
+    color: '#000'
+  } 
+})
+
