@@ -4,7 +4,7 @@ import GenericForm from '../../components/GenericForm';
 export default function Login() {
   return (
     <View style={styles.container}>
-      <GenericForm/>
+      <GenericForm />
     </View>
   );
 }
