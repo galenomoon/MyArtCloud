@@ -16,7 +16,7 @@ export default function GenericForm() {
         style={{ width: 200, height: 200, marginTop: 20 }} />
       <TextInput style={styles.input} placeholder="E-mail" />
       {isCreateAccount && <TextInput style={styles.input} placeholder="Username" />}
-      <TextInput style={styles.input} placeholder="Password" />
+      <TextInput style={styles.input} placeholder="Senha" />
       {isCreateAccount ?
         <>
           <MyTouchableOpacity childreen={<Text style={styles.buttonText}>Criar Conta</Text>} style={styles.button} />

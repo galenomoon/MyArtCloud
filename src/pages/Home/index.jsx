@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, FlatList, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, FlatList } from 'react-native';
 
 //utils
 import texts from '../../../utils/texts';
+
+//components
+import PreviewText from '../../components/PreviewText';
 
 export default function Home() {
 
@@ -12,7 +15,7 @@ export default function Home() {
       <FlatList
         data={texts}
         keyExtractor={item => item.id.toString()}
-        renderItem={({ item }) => <Text style={styles.text} >{item.text}</Text>}
+        renderItem={({ item }) => <PreviewText style={styles.text} text={item}/>}
       />
     </View>
   );
@@ -21,7 +24,7 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#333',
+    backgroundColor: '#C3B1E1',
     alignItems: 'center',
     justifyContent: 'center',
   },

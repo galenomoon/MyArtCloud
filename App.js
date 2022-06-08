@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 //styles
-import { StyleSheet, Text, View, Button, Image, TouchableOpacity, ScrollView, FlatList } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { FaUser, FaHome, FaPenAlt } from 'react-icons/fa';
 
 //firebase
@@ -34,11 +34,13 @@ export default function App() {
     },
     "home": {
       tabBarIcon: () => <FaHome size={30} />,
-      tabBarLabel: "Home",
+      headerShown: false,
+      tabBarLabel: "Meus Textos",
       tabBarLabelStyle: styles.label
     },
     "write": {
       tabBarIcon: () => <FaPenAlt size={30}  />,
+      headerShown: false,
       tabBarLabel: "Escrever",
       tabBarLabelStyle: styles.label
     }
