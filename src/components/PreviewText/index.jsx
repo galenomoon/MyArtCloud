@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet } from 'react-native';
 
 //utils
-import Divider from '../../../utils/divider';
+import Divider from '../../../utils/Divider';
 
 export default function PreviewText({ text }) {
   return (

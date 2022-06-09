@@ -1,6 +1,9 @@
 
 import { View, Text, StyleSheet } from 'react-native';
 
+//styles
+import styles from './styles';
+
 //components
 import NoteInputText from '../../components/NoteInputText';
 
@@ -15,28 +18,3 @@ export default function Write() {
     </View>
   );
 }
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#C3B1E1',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  header: {
-    fontSize: 25,
-    fontWeight: 'bold',
-    marginBottom: 5,
-    width: '100%',
-  },
-  text: {
-    fontSize: 20,
-  },
-  title: {
-    fontSize: 25,
-    fontWeight: 'bold',
-    marginBottom: 5,
-    width: '100%',
-  }
-});
