@@ -1,23 +1,26 @@
+
+const example = "Lorsem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget consectetur sagittis, nisl nunc consectetur nisi, euismod aliquam nisl nisl euismod nisi."
+
 export default [
     {
-      "id": "1", "title":"Meu Texto", "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget consectetur sagittis, nisl nunc consectetur nisi, euismod aliquam nisl nisl euismod nisi. "
+      "id": "1", "title":"Meu Texto", "text": example
     },
     {
-      "id": "2", "title":"Poesia", "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget consectetur sagittis, nisl nunc consectetur nisi, euismod aliquam nisl nisl euismod nisi. "
+      "id": "2", "title":"Poesia", "text": example
     },
     {
-      "id": "3", "title":"Musica que fiz ontem", "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget consectetur sagittis, nisl nunc consectetur nisi, euismod aliquam nisl nisl euismod nisi. "
+      "id": "3", "title":"Musica que fiz ontem", "text": example
     },
     {
-      "id": "4", "title":"Nebulosa", "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget consectetur sagittis, nisl nunc consectetur nisi, euismod aliquam nisl nisl euismod nisi. "
+      "id": "4", "title":"Nebulosa", "text": example
     },
     {
-      "id": "5", "title":"Ideia", "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget consectetur sagittis, nisl nunc consectetur nisi, euismod aliquam nisl nisl euismod nisi. "
+      "id": "5", "title":"Ideia", "text": example
     },
     {
-      "id": "6", "title":"Ideia", "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget consectetur sagittis, nisl nunc consectetur nisi, euismod aliquam nisl nisl euismod nisi. "
+      "id": "6", "title":"Ideia", "text": example
     },
     {
-      "id": "7", "title":"Ideia", "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget consectetur sagittis, nisl nunc consectetur nisi, euismod aliquam nisl nisl euismod nisi. "
+      "id": "7", "title":"Ideia", "text": example
     },
   ]

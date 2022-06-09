@@ -1,5 +1,5 @@
-import { View, TextInput, Text, Alert } from 'react-native';
-import React, { useState } from 'react';
+import { View, TextInput, Text, Keyboard } from 'react-native';
+import React, { useState, useRef } from 'react';
 
 //navigation
 import { useRoute } from '@react-navigation/native';
@@ -11,6 +11,7 @@ export default function NoteInputText() {
   const route = useRoute();
   const [title, setTitle] = useState(route.params?.title ?? '');
   const [text, setText] = useState(route.params?.text ?? '');
+  const inputRef = useRef(null);
 
   return (
     <View style={styles.container}>
@@ -19,15 +20,17 @@ export default function NoteInputText() {
         onChangeText={(text) => setTitle(text)}
         value={title}
         style={styles.titleInput}
+        autoFocus={true}
+        onSubmitEditing={() => inputRef.current.focus()}
       />
       <Text style={styles.label}>Texto:</Text>
       <TextInput
+        ref={inputRef}
         onChangeText={(text) => setText(text)}
+        onPress={() => Keyboard.open()}
         value={text}
+        editable={true}
         multiline={true}
-        editable
-        maxLength={9000}
-        numberOfLines={9000}
         style={styles.inputArea}/>
     </View>
   )

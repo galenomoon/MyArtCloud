@@ -1,6 +1,7 @@
 //react-navigation
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { StatusBar } from 'expo-status-bar';
 
 //firebase
 import app from './src/firebaseConection';
@@ -31,6 +32,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
+      <StatusBar animated={true} backgroundColor={"#1fa3b8"} style="light" />
       <Stack.Navigator>
         <Stack.Screen name="Login" options={tabConfig.login} component={Login} />
         <Stack.Screen name="Home" options={tabConfig.home} component={Home} />

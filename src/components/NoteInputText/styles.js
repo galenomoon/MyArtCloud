@@ -2,18 +2,15 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   inputArea: {
-    width: 'auto',
     borderWidth: 1,
     flex: 1,
-    padding: 10,
+    height: 200,
+    paddingHorizontal: 10,
     marginBottom: 10,
     borderRadius: 2,
     fontSize: 20,
     backgroundColor: '#fff',
-    shadowColor: '#171717',
-    shadowOffset: { width: -2, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
+    textAlignVertical: 'top'
   },
   titleInput: {
     width: '100%',
@@ -24,21 +21,16 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     fontSize: 20,
     backgroundColor: '#fff',
-    shadowColor: '#171717',
-    shadowOffset: { width: -2, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
   },
   container: {
     flex: 1,
     width: '90%',
-    alignSelf: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   },
   label: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 5,
+    marginBottom: 2,
     width: '100%',
   },
   btnLabel: {
