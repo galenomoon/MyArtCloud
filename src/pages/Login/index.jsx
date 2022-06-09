@@ -1,4 +1,6 @@
 import { StyleSheet, View } from 'react-native';
+
+//components
 import GenericForm from '../../components/GenericForm';
 
 export default function Login() {

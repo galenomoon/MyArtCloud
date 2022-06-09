@@ -1,5 +1,5 @@
 
-import { View, Text, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 
 //styles
 import styles from './styles';
@@ -10,11 +10,7 @@ import NoteInputText from '../../components/NoteInputText';
 export default function Write() {
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}></Text>
-      </View>
       <NoteInputText />
-      <Text style={styles.text} ></Text>
     </View>
   );
 }

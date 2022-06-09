@@ -1,30 +1,34 @@
-import { View, TextInput, Text } from 'react-native';
+import { View, TextInput, Text, Alert } from 'react-native';
+import React, { useState } from 'react';
+
+//navigation
+import { useRoute } from '@react-navigation/native';
 
 //styles
-import { BsFillCheckCircleFill } from 'react-icons/bs';
 import styles from './styles';
 
-//utils
-import MyTouchableOpacity from '../../../utils/MyTouchableOpacity';
-
 export default function NoteInputText() {
-
-  const saveText = () => (
-    <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
-      <BsFillCheckCircleFill size={20} color="#fff" />
-      <Text style={styles.btnLabel}>Salvar</Text>
-    </View>
-  )
+  const route = useRoute();
+  const [title, setTitle] = useState(route.params?.title ?? '');
+  const [text, setText] = useState(route.params?.text ?? '');
 
   return (
     <View style={styles.container}>
       <Text style={styles.label}>Título:</Text>
-      <TextInput style={styles.titleInput} />
+      <TextInput
+        onChangeText={(text) => setTitle(text)}
+        value={title}
+        style={styles.titleInput}
+      />
       <Text style={styles.label}>Texto:</Text>
-      <TextInput multiline={true} numberOfLines={4} style={styles.inputArea} />
-      <View>
-        <MyTouchableOpacity style={styles.saveBtn} childreen={saveText()} />
-      </View>
+      <TextInput
+        onChangeText={(text) => setText(text)}
+        value={text}
+        multiline={true}
+        editable
+        maxLength={9000}
+        numberOfLines={9000}
+        style={styles.inputArea}/>
     </View>
   )
 }

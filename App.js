@@ -1,10 +1,6 @@
 //react-navigation
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
-//styles
-import { StyleSheet } from 'react-native';
-import { FaUser, FaHome, FaPenAlt } from 'react-icons/fa';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 //firebase
 import app from './src/firebaseConection';
@@ -15,45 +11,32 @@ import Login from './src/pages/Login';
 import Home from './src/pages/Home';
 import Write from './src/pages/Write';
 
-
 export default function App() {
-  const Tab = createBottomTabNavigator();
-  const styles = StyleSheet.create({
-    label: {
-      fontSize: 13,
-      color: '#000'
-    } 
-  })
-  
+  const Stack = createNativeStackNavigator();
+
   const tabConfig = {
     "login": {
-      headerShown: false,
-      tabBarIcon: () => <FaUser size={30} />,
-      tabBarLabel: "Entrar",
-      tabBarLabelStyle: styles.label
+      headerShown: false
     },
     "home": {
-      tabBarIcon: () => <FaHome size={30} />,
-      headerShown: false,
-      tabBarLabel: "Meus Textos",
-      tabBarLabelStyle: styles.label
+      headerShown: false
     },
     "write": {
-      tabBarIcon: () => <FaPenAlt size={30}  />,
-      headerShown: false,
-      tabBarLabel: "Escrever",
-      tabBarLabelStyle: styles.label
+      headerTitle: "",
+      headerStyle: {
+        height: 40
+      }
     }
   }
 
   return (
-     <NavigationContainer>
-       <Tab.Navigator>
-         <Tab.Screen name="Login" options={tabConfig.login} component={Login} />
-         <Tab.Screen name="Home" options={tabConfig.home} component={Home} />
-         <Tab.Screen name="Write" options={tabConfig.write} component={Write} />
-       </Tab.Navigator>
-     </NavigationContainer>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Login" options={tabConfig.login} component={Login} />
+        <Stack.Screen name="Home" options={tabConfig.home} component={Home} />
+        <Stack.Screen name="Write" options={tabConfig.write} component={Write} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 

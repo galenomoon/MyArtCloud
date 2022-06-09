@@ -2,10 +2,9 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   inputArea: {
-    flex: 1,
     width: 'auto',
-    borderColor: '#000',
     borderWidth: 1,
+    flex: 1,
     padding: 10,
     marginBottom: 10,
     borderRadius: 2,
@@ -15,7 +14,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: -2, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
-    outlineStyle: 'none'
   },
   titleInput: {
     width: '100%',
@@ -30,7 +28,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: -2, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
-    outlineStyle: 'none'
   },
   container: {
     flex: 1,
@@ -53,7 +50,7 @@ const styles = StyleSheet.create({
   },
   saveBtn: {
     width: '100%',
-    height: 50,
+    height: 40,
     backgroundColor: '#6cb06b',
     alignItems: 'center',
     justifyContent: 'space-between',

@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 5,
     borderRadius: 5,
-    outlineStyle: 'none'
+    // outlineStyle: 'none'
   },
   button: {
     width: '80%',
@@ -29,7 +29,9 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontWeight: 'bold',
-    fontSize: 16
+    fontSize: 16,
+    margin: 0,
+    padding: 0
   },
   title: {
     fontSize: 35,
