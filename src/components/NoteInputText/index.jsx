@@ -1,10 +1,17 @@
 import { View, TextInput, Text, Keyboard } from 'react-native';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+
+//utils
+import MyTouchableOpacity from '../../../utils/MyTouchableOpacity';
+
+//firebase
+import firebase from '../../firebaseConection';
 
 //navigation
-import { useRoute } from '@react-navigation/native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 
 //styles
+import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
 
 export default function NoteInputText() {
@@ -12,16 +19,34 @@ export default function NoteInputText() {
   const [title, setTitle] = useState(route.params?.title ?? '');
   const [text, setText] = useState(route.params?.text ?? '');
   const inputRef = useRef(null);
+  const navigation = useNavigation();
+
+  const focusTextInput = () => inputRef.current.focus()
+
+  async function saveNote() {
+    if (title !== '' && text !== '') {
+      let note = await firebase.database().ref("notes")
+      let key = note.push().key;
+
+      note.child(key).set({
+        title: title,
+        text: text
+      })
+      setText('');
+      setTitle('');
+    }
+    navigation.navigate('Home');
+  }
 
   return (
     <View style={styles.container}>
       <Text style={styles.label}>Título:</Text>
       <TextInput
         onChangeText={(text) => setTitle(text)}
-        value={title}
+        onSubmitEditing={() => focusTextInput()}
         style={styles.titleInput}
         autoFocus={true}
-        onSubmitEditing={() => inputRef.current.focus()}
+        value={title}
       />
       <Text style={styles.label}>Texto:</Text>
       <TextInput
@@ -31,7 +56,13 @@ export default function NoteInputText() {
         value={text}
         editable={true}
         multiline={true}
-        style={styles.inputArea}/>
+        style={styles.inputArea}
+      />
+      <MyTouchableOpacity
+        fn={() => saveNote()}
+        style={styles.saveBtn}
+        childreen={<Icon name='save' size={35} color="#FFF" />}
+      />
     </View>
   )
 }

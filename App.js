@@ -3,10 +3,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
 
-//firebase
-import app from './src/firebaseConection';
-import { getDatabase } from 'firebase/database';
-
 //components
 import Login from './src/pages/Login';
 import Home from './src/pages/Home';

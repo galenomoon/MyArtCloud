@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     flex: 1,
     height: 200,
-    paddingHorizontal: 10,
+    padding: 10,
     marginBottom: 10,
     borderRadius: 2,
     fontSize: 20,
@@ -41,18 +41,21 @@ const styles = StyleSheet.create({
     marginHorizontal: 6,
   },
   saveBtn: {
-    width: '100%',
-    height: 40,
-    backgroundColor: '#6cb06b',
+    flex: 1,
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    borderRadius: 100,
+    width: 60,
+    height: 60,
+    backgroundColor: '#1fa3b8',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    borderRadius: 4,
-    marginBottom: 10,
+    justifyContent: 'center',
     shadowColor: '#171717',
-    shadowOffset: { width: -2, height: 4 },
+    shadowOffset: { width: 3, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
-  }
+  },
 });
 
 export default styles;
