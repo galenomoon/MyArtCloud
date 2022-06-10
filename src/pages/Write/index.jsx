@@ -18,22 +18,18 @@ import firebase from '../../firebaseConection';
 
 export default function Write() {
   const route = useRoute();
-  console.log("sss",route.params);
   const [title, setTitle] = useState(route.params?.item?.title ?? '');
   const [text, setText] = useState(route.params?.item?.text ?? '');
   const [key, setKey] = useState(route.params?.item?.key ?? '');
+  const [userKey, setUserKey] = useState(route.params?.userKey);
   const inputRef = useRef(null);
   const navigation = useNavigation();
-  const [userKey, setUserKey] = useState(route.params?.userKey);
 
   const focusTextInput = () => inputRef.current.focus()
 
   async function saveNote() {
     if (key) {
-      await firebase.database().ref(`users/${userKey}/notes/${key}`).update({
-        title,
-        text,
-      });
+      await firebase.database().ref(`users/${userKey}/notes/${key}`).update({ title, text });
     } else {
       if (title !== '' && text !== '') {
         let note = await firebase.database().ref(`users/${userKey}/notes`)

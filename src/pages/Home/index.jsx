@@ -95,7 +95,7 @@ export default function Home() {
             onLongPress={() => {
               deleteNote(item.key)
             }}
-            delayLongPress={2000} 
+            delayLongPress={1000} 
             fn={() => navigation.navigate("Write", {item, userKey})} childreen={<PreviewText text={item} />} />}
         />
         :
