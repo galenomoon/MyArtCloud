@@ -40,9 +40,7 @@ export default function GenericForm() {
     await firebase.auth().createUserWithEmailAndPassword(email, password).then(res => {
       navigation.navigate("Home", { userKey: res.user.uid });
       Alert.alert('Conta Cadastrada com Sucesso!');
-      firebase.database().ref('users').child(res.user.uid).set({
-        email: email
-      });
+      firebase.database().ref('users').child(res.user.uid).set({ email: email });
       setIsCreateAccount(false)
       clearForm()
     }).catch(error => errorAlert(error));
@@ -88,10 +86,17 @@ export default function GenericForm() {
           placeholder="Confirme sua Senha"
         />
       }
-      <MyTouchableOpacity fn={() => isCreateAccount ? createAccount() : login()} childreen={<Text style={styles.buttonText}>{isCreateAccount ? "Criar Conta" : "Entrar"}</Text>} style={styles.button} />
+      <MyTouchableOpacity
+        fn={() => isCreateAccount ? createAccount() : login()}
+        childreen={<Text style={styles.buttonText}>{isCreateAccount ? "Criar Conta" : "Entrar"}</Text>}
+        style={styles.button}
+      />
       <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
         <Text>{isCreateAccount ? "Já" : "Não"} tem uma conta? </Text>
-        <MyTouchableOpacity fn={() => setIsCreateAccount(!isCreateAccount)} childreen={<Text style={{ color: "blue" }}>Clique aqui</Text>} />
+        <MyTouchableOpacity
+          fn={() => setIsCreateAccount(!isCreateAccount)}
+          childreen={<Text style={{ color: "blue" }}>Clique aqui</Text>}
+        />
       </View>
     </View>
   );

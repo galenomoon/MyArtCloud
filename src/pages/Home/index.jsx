@@ -1,5 +1,5 @@
-import { Text, View, FlatList, Alert } from 'react-native';
 import React, { useState, useEffect } from 'react';
+import { Text, View, FlatList, Alert } from 'react-native';
 
 //utils
 import MyTouchableOpacity from '../../../utils/MyTouchableOpacity';
@@ -43,47 +43,45 @@ export default function Home() {
 
   function logout() {
     Alert.alert(
-      "Log-out",
-      "Deseja realmente sair?",
-      [
-        {
-          text: "Cancelar",
-          onPress: () => { },
-          style: "cancel"
-        },
-        {
-          text: "Sair", onPress: async () => {
-            await firebase.auth().signOut();
-            navigation.navigate('Login');
-          }
+      "Log-out", "Deseja realmente sair?",
+      [{
+        text: "Cancelar",
+        onPress: () => { },
+        style: "cancel"
+      },
+      {
+        text: "Sair", onPress: async () => {
+          await firebase.auth().signOut();
+          navigation.navigate('Login');
         }
-      ]
+      }]
     );
   }
-
 
   async function deleteNote(key) {
-    Alert.alert(
-      "Deletar nota",
-      "Deseja realmente deletar esse texto?",
-      [
-        {
-          text: "Cancelar",
-          onPress: () => { },
-          style: "cancel"
-        },
-        {
-          text: "Deletar", onPress: async () => {
-            if (key) {
-              await firebase.database().ref(`users/${userKey}/notes/${key}`).remove();
-              navigation.navigate('Home');
-            }
-          }
+    Alert.alert("Deletar nota", "Deseja realmente deletar esse texto?",
+      [{
+        text: "Cancelar",
+        onPress: () => { },
+        style: "cancel"
+      },
+      {
+        text: "Deletar", onPress: async () => {
+          key && await firebase.database().ref(`users/${userKey}/notes/${key}`).remove();
+          navigation.navigate('Home');
         }
-      ]
+      }]
     );
-
   }
+
+  const renderItem = ({ item }) => (
+    <MyTouchableOpacity
+      fn={() => navigation.navigate("Write", { item, userKey })}
+      onLongPress={() => deleteNote(item.key)}
+      delayLongPress={1000}
+      childreen={<PreviewText text={item} />}
+    />
+  )
 
   return (
     <View style={styles.container}>
@@ -91,12 +89,7 @@ export default function Home() {
         <FlatList
           data={notes}
           keyExtractor={item => item.key}
-          renderItem={({ item }) => <MyTouchableOpacity
-            onLongPress={() => {
-              deleteNote(item.key)
-            }}
-            delayLongPress={1000} 
-            fn={() => navigation.navigate("Write", {item, userKey})} childreen={<PreviewText text={item} />} />}
+          renderItem={({ item }) => renderItem({ item })}
         />
         :
         <View style={{ alignItems: "center" }}>
@@ -104,7 +97,7 @@ export default function Home() {
         </View>
       }
       <MyTouchableOpacity
-        fn={() => navigation.navigate("Write", {userKey: userKey})}
+        fn={() => navigation.navigate("Write", { userKey: userKey })}
         style={styles.newNoteBtn}
         childreen={<Icon name='add-outline' size={50} color="#FFF" />}
       />

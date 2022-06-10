@@ -15,7 +15,6 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 5,
     borderRadius: 5,
-    // outlineStyle: 'none'
   },
   button: {
     width: '80%',

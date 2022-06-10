@@ -5,7 +5,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 20,
     backgroundColor: '#C3B1E1',
-    // alignItems: 'center',
     justifyContent: 'center'
   },
   newNoteBtn: {
@@ -40,7 +39,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
   },
-  emptyText:{
+  emptyText: {
     fontSize: 20,
     color: '#fff',
     padding: 20,
