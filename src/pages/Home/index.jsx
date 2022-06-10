@@ -92,7 +92,7 @@ export default function Home() {
           keyExtractor={item => item.key}
           renderItem={({ item }) => <MyTouchableOpacity
             onLongPress={() => {
-              console.log('Long Press')
+              deleteNote(item.key)
             }}
             delayLongPress={2000} fn={() => navigation.navigate("Write", item)} childreen={<PreviewText text={item} />} />}
         />
