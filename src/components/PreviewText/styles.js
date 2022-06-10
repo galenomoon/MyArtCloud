@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     flex: 1,
     maxHeight: 112,
     height: 112,
-    width: "100%",
+    width: "auto",
     backgroundColor: '#fff',
     margin: 10,
     borderRadius: 2,

@@ -1,5 +1,5 @@
-import { View, TextInput, Text, Keyboard } from 'react-native';
-import React, { useState, useRef, useEffect } from 'react';
+import { View, TextInput, Text, Keyboard, Alert } from 'react-native';
+import React, { useState, useRef } from 'react';
 
 //utils
 import MyTouchableOpacity from '../../../utils/MyTouchableOpacity';
@@ -18,22 +18,30 @@ export default function NoteInputText() {
   const route = useRoute();
   const [title, setTitle] = useState(route.params?.title ?? '');
   const [text, setText] = useState(route.params?.text ?? '');
+  const [key, setKey] = useState(route.params?.key ?? '');
   const inputRef = useRef(null);
   const navigation = useNavigation();
 
   const focusTextInput = () => inputRef.current.focus()
 
   async function saveNote() {
-    if (title !== '' && text !== '') {
-      let note = await firebase.database().ref("notes")
-      let key = note.push().key;
+    if (key) {
+      await firebase.database().ref(`notes/${key}`).update({
+        title,
+        text,
+      });
+    } else {
+      if (title !== '' && text !== '') {
+        let note = await firebase.database().ref("notes")
+        let key = note.push().key;
 
-      note.child(key).set({
-        title: title,
-        text: text
-      })
-      setText('');
-      setTitle('');
+        note.child(key).set({
+          title: title,
+          text: text
+        })
+        setText('');
+        setTitle('');
+      }
     }
     navigation.navigate('Home');
   }

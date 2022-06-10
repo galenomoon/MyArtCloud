@@ -70,7 +70,7 @@ export default function GenericForm() {
         style={{ width: 200, height: 200, marginTop: 20 }} />
       <TextInput value={email} onChangeText={(text) => setEmail(text)} style={styles.input} placeholder="E-mail" />
       {isCreateAccount && <TextInput value={username} onChangeText={(text) => setUsername(text)} style={styles.input} placeholder="Username" />}
-      <TextInput value={password} onChangeText={(text) => setPassword(text)} style={styles.input} placeholder="Senha" />
+      <TextInput secureTextEntry={true} value={password} onChangeText={(text) => setPassword(text)} style={styles.input} placeholder="Senha" />
       <MyTouchableOpacity fn={() => isCreateAccount ? createAccount() : login()} childreen={<Text style={styles.buttonText}>{isCreateAccount ? "Criar Conta" : "Entrar"}</Text>} style={styles.button} />
       {isCreateAccount ?
         <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
