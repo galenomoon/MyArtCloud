@@ -9,7 +9,7 @@ import styles from './styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 // navigation
-import { useNavigation } from '@react-navigation/native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 
 //components
 import PreviewText from '../../components/PreviewText';
@@ -20,13 +20,14 @@ import firebase from '../../firebaseConection';
 export default function Home() {
   const [notes, setNotes] = useState([]);
   const navigation = useNavigation();
+  const route = useRoute();
+  const [userKey, setUserKey] = useState(route.params?.userKey)
 
   useEffect(() => {
-    async function getNotes() {
-      await firebase.database().ref('notes').on('value', (snapshot) => {
+    function getNotes() {
+      firebase.database().ref(`users/${userKey}/notes`).on('value', (snapshot) => {
         let list = [];
         snapshot.forEach((child) => {
-
           let data = {
             key: child.key,
             title: child.val().title,
@@ -74,7 +75,7 @@ export default function Home() {
         {
           text: "Deletar", onPress: async () => {
             if (key) {
-              await firebase.database().ref(`notes/${key}`).remove();
+              await firebase.database().ref(`users/${userKey}/notes/${key}`).remove();
               navigation.navigate('Home');
             }
           }
@@ -94,7 +95,8 @@ export default function Home() {
             onLongPress={() => {
               deleteNote(item.key)
             }}
-            delayLongPress={2000} fn={() => navigation.navigate("Write", item)} childreen={<PreviewText text={item} />} />}
+            delayLongPress={2000} 
+            fn={() => navigation.navigate("Write", {item, userKey})} childreen={<PreviewText text={item} />} />}
         />
         :
         <View style={{ alignItems: "center" }}>
@@ -102,7 +104,7 @@ export default function Home() {
         </View>
       }
       <MyTouchableOpacity
-        fn={() => navigation.navigate("Write")}
+        fn={() => navigation.navigate("Write", {userKey: userKey})}
         style={styles.newNoteBtn}
         childreen={<Icon name='add-outline' size={50} color="#FFF" />}
       />

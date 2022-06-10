@@ -14,13 +14,14 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
 
-export default function NoteInputText() {
+export default function NoteInputText({userKey}) {
   const route = useRoute();
   const [title, setTitle] = useState(route.params?.title ?? '');
   const [text, setText] = useState(route.params?.text ?? '');
   const [key, setKey] = useState(route.params?.key ?? '');
   const inputRef = useRef(null);
   const navigation = useNavigation();
+
 
   const focusTextInput = () => inputRef.current.focus()
 
@@ -32,7 +33,7 @@ export default function NoteInputText() {
       });
     } else {
       if (title !== '' && text !== '') {
-        let note = await firebase.database().ref("notes")
+        let note = await firebase.database().ref(`users/${userKey}`)
         let key = note.push().key;
 
         note.child(key).set({

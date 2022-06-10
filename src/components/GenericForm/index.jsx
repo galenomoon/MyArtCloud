@@ -17,29 +17,43 @@ export default function GenericForm() {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [isCreateAccount, setIsCreateAccount] = useState(false);
   const navigation = useNavigation();
 
-  async function createAccount() {
-    if (email !== '' && username !== '' && password !== '') {
-      await firebase.auth().createUserWithEmailAndPassword(email, password).then(res => {
-        Alert.alert('Conta Cadastrada com Sucesso!');
-        setIsCreateAccount(false)
-        setEmail('')
-        setUsername('')
-        setPassword('')
-      }).catch(error => {
-        if (error.code === 'auth/email-already-in-use') {
-          Alert.alert('Email já está em uso')
-        }
-        if (error.code === 'auth/invalid-email') {
-          Alert.alert('Email inválido')
-        }
-        if (error.code === 'auth/weak-password') {
-          Alert.alert('Senha muito fraca')
-        }
+  const clearForm = () => {
+    setEmail('');
+    setUsername('');
+    setPassword('');
+  }
 
-      });
+  async function createAccount() {
+    if (email !== '' && username !== '' && password !== '' && confirmPassword !== '') {
+      if (password === confirmPassword) {
+        await firebase.auth().createUserWithEmailAndPassword(email, password).then(res => {
+          Alert.alert('Conta Cadastrada com Sucesso!');
+          firebase.database().ref('users').child(res.user.uid).set({
+            username: username,
+            email: email
+          });
+          setIsCreateAccount(false)
+          clearForm()
+        }).catch(error => {
+          if (error.code === 'auth/email-already-in-use') {
+            Alert.alert('Email já está em uso')
+          }
+          if (error.code === 'auth/invalid-email') {
+            Alert.alert('Email inválido')
+          }
+          if (error.code === 'auth/weak-password') {
+            Alert.alert('Senha muito fraca')
+          }
+
+        });
+      }
+      else {
+        Alert.alert('Senhas não coincidem')
+      }
     } else {
       Alert.alert('Preencha todos os campos')
     }
@@ -49,7 +63,8 @@ export default function GenericForm() {
     if (email !== '' && password !== '') {
       await firebase.auth().signInWithEmailAndPassword(email, password).then(res => {
         Alert.alert('Login realizado com sucesso!');
-        navigation.navigate("Home")
+        clearForm()
+        navigation.navigate("Home", { userKey: res.user.uid });
       }).catch(error => {
         if (error.code === 'auth/user-not-found') {
           Alert.alert('Usuário não encontrado')
@@ -71,6 +86,7 @@ export default function GenericForm() {
       <TextInput value={email} onChangeText={(text) => setEmail(text)} style={styles.input} placeholder="E-mail" />
       {isCreateAccount && <TextInput value={username} onChangeText={(text) => setUsername(text)} style={styles.input} placeholder="Username" />}
       <TextInput secureTextEntry={true} value={password} onChangeText={(text) => setPassword(text)} style={styles.input} placeholder="Senha" />
+      {isCreateAccount &&<TextInput secureTextEntry={true} value={confirmPassword} onChangeText={(text) => setConfirmPassword(text)} style={styles.input} placeholder="Confirme sua Senha" />}
       <MyTouchableOpacity fn={() => isCreateAccount ? createAccount() : login()} childreen={<Text style={styles.buttonText}>{isCreateAccount ? "Criar Conta" : "Entrar"}</Text>} style={styles.button} />
       {isCreateAccount ?
         <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
