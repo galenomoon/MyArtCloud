@@ -4,7 +4,6 @@ import React, { useState, useEffect, useRef } from 'react';
 
 //styles
 import Icon from 'react-native-vector-icons/Ionicons';
-import stylesForm from './stylesForm';
 import styles from './styles';
 
 //navigation
@@ -19,13 +18,26 @@ import Divider from '../../../utils/Divider';
 
 export default function Write() {
   const route = useRoute();
+  const inputRef = useRef(null);
+  const navigation = useNavigation();
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+  const [userKey, setUserKey] = useState(route.params?.userKey);
   const [title, setTitle] = useState(route.params?.item?.title ?? '');
   const [text, setText] = useState(route.params?.item?.text ?? '');
   const [key, setKey] = useState(route.params?.item?.key ?? '');
-  const [userKey, setUserKey] = useState(route.params?.userKey);
-  const inputRef = useRef(null);
-  const navigation = useNavigation();
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow', () => setKeyboardVisible(true)
+    )
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide', () => setKeyboardVisible(false)
+    )
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
 
   const focusTextInput = () => inputRef.current.focus()
 
@@ -48,46 +60,29 @@ export default function Write() {
 
   async function saveNote() {
     if (key) {
-      await firebase.database().ref(`users/${userKey}/notes/${key}`).update({ title, text });
-    } else {
-      if (title !== '' && text !== '') {
-        let note = await firebase.database().ref(`users/${userKey}/notes`)
-        let key = note.push().key;
-
-        note.child(key).set({
-          title: title,
-          text: text
-        })
-        setText('');
-        setTitle('');
-      }
+      await firebase.database().ref(`users/${userKey}/notes/${key}`).update({ title, text })
+      return;
     }
-    back()
-  }
 
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow', () => setKeyboardVisible(true)
-    )
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide', () => setKeyboardVisible(false)
-    )
-    return () => {
-      keyboardDidHideListener.remove();
-      keyboardDidShowListener.remove();
-    };
-  }, []);
+    let note = firebase.database().ref(`users/${userKey}/notes`)
+    let key = note.push().key;
+
+    await note.child(key).set({
+      title: title === '' ? "Nova Anotação" : title,
+      text: text
+    })
+  }
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Icon onPress={() => backWithoutSave()} style={{ margin: 10 }} name="arrow-back-outline" size={35} color="#aaa" />
       </View>
-      <View style={stylesForm.container}>
+      <View style={styles.containerForm}>
         <TextInput
           onChangeText={(text) => setTitle(text)}
           onSubmitEditing={() => focusTextInput()}
-          style={stylesForm.titleInput}
+          style={styles.titleInput}
           placeholder="Titulo"
           autoFocus={true}
           value={title}
@@ -101,13 +96,13 @@ export default function Write() {
           value={text}
           editable={true}
           multiline={true}
-          style={stylesForm.inputArea}
+          style={styles.inputArea}
         />
         {
           !isKeyboardVisible &&
           <MyTouchableOpacity
             fn={() => saveNote()}
-            style={stylesForm.saveBtn}
+            style={styles.saveBtn}
             childreen={<Icon name='save' size={35} color="#FFF" />}
           />
         }

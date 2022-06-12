@@ -18,10 +18,10 @@ import PreviewText from '../../components/PreviewText';
 import firebase from '../../firebaseConection';
 
 export default function Home() {
+  const route = useRoute();
+  const navigation = useNavigation();
   const [notes, setNotes] = useState([]);
   const [isDarkTheme, setIsDarkTheme] = useState(false);
-  const navigation = useNavigation();
-  const route = useRoute();
   const [userKey, setUserKey] = useState(route.params?.userKey)
 
   useEffect(() => {
@@ -44,14 +44,14 @@ export default function Home() {
 
   function logout() {
     Alert.alert(
-      "Log-out", "Deseja realmente sair?",
+      "Sair", "Deseja realmente sair?",
       [{
         text: "Cancelar",
-        onPress: () => { },
-        style: "cancel"
+        onPress: () => { }
       },
       {
-        text: "Sair", onPress: async () => {
+        text: "Sair",
+        onPress: async () => {
           await firebase.auth().signOut();
           navigation.navigate('Login');
         }
@@ -63,14 +63,11 @@ export default function Home() {
     Alert.alert("Deletar nota", "Deseja realmente deletar esse texto?",
       [{
         text: "Cancelar",
-        onPress: () => {},
-        style: "cancel"
+        onPress: () => { }
       },
       {
-        text: "Deletar", onPress: async () => {
-          key && await firebase.database().ref(`users/${userKey}/notes/${key}`).remove();
-          navigation.navigate('Home');
-        }
+        text: "Deletar",
+        onPress: async () => await firebase.database().ref(`users/${userKey}/notes/${key}`).remove()
       }]
     );
   }
@@ -79,7 +76,7 @@ export default function Home() {
     <MyTouchableOpacity
       fn={() => navigation.navigate("Write", { item, userKey })}
       onLongPress={() => deleteNote(item.key)}
-      delayLongPress={1000}
+      delayLongPress={690}
       childreen={<PreviewText text={item} />}
     />
   )
@@ -107,10 +104,10 @@ export default function Home() {
         style={styles.logoutBtn}
         childreen={<Icon name='log-out' size={50} color="#FFF" />}
       />
-       <MyTouchableOpacity
+      <MyTouchableOpacity
         fn={() => setIsDarkTheme(!isDarkTheme)}
         style={isDarkTheme ? styles.lightBtn : styles.darkBtn}
-        childreen={<Icon name={isDarkTheme ? 'moon' : 'bulb'} size={30} color={isDarkTheme ? "#FFF" : "#333" } />}
+        childreen={<Icon name={isDarkTheme ? 'moon' : 'bulb'} size={30} color={isDarkTheme ? "#FFF" : "#333"} />}
       />
     </View>
   );

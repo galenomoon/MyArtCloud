@@ -20,12 +20,8 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isCreateAccount, setIsCreateAccount] = useState(false);
+  const clearForm = () => [setEmail(''), setPassword(''), setConfirmPassword('')]
   const devTest = () => navigation.navigate("Home")
-  const clearForm = () => {
-    setEmail('');
-    setPassword('');
-    setConfirmPassword('');
-  }
 
   async function createAccount() {
     if (password !== confirmPassword) {
@@ -103,4 +99,3 @@ export default function Login() {
     </View>
   );
 }
-

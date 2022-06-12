@@ -3,7 +3,7 @@ const example = "Lorsem ipsum dolor sit amet, consectetur adipiscing elit. Donec
 
 export default [
     {
-      "id": "1", "title":"Meu Texto", "text": example
+      "id": "1", "title":"Meu Texto Lindo e Maravilhoso", "text": example
     },
     {
       "id": "2", "title":"Poesia", "text": example
