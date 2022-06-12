@@ -6,7 +6,8 @@ const MyTouchableOpacity = ({ childreen, fn, style, onLongPress, delayLongPress 
     onPress={() => fn && fn()}
     onLongPress={() => onLongPress && onLongPress()}
     delayLongPress={delayLongPress && delayLongPress}
-  >{childreen}
+  >
+    {childreen}
   </TouchableOpacity>;
 
 export default MyTouchableOpacity;

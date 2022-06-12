@@ -3,7 +3,7 @@ import { Text, View, FlatList, Alert } from 'react-native';
 
 //utils
 import MyTouchableOpacity from '../../../utils/MyTouchableOpacity';
-
+import texts from '../../../utils/texts'
 // styles
 import styles from './styles';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -19,6 +19,7 @@ import firebase from '../../firebaseConection';
 
 export default function Home() {
   const [notes, setNotes] = useState([]);
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
   const navigation = useNavigation();
   const route = useRoute();
   const [userKey, setUserKey] = useState(route.params?.userKey)
@@ -62,7 +63,7 @@ export default function Home() {
     Alert.alert("Deletar nota", "Deseja realmente deletar esse texto?",
       [{
         text: "Cancelar",
-        onPress: () => { },
+        onPress: () => {},
         style: "cancel"
       },
       {
@@ -105,6 +106,11 @@ export default function Home() {
         fn={() => logout()}
         style={styles.logoutBtn}
         childreen={<Icon name='log-out' size={50} color="#FFF" />}
+      />
+       <MyTouchableOpacity
+        fn={() => setIsDarkTheme(!isDarkTheme)}
+        style={isDarkTheme ? styles.lightBtn : styles.darkBtn}
+        childreen={<Icon name={isDarkTheme ? 'moon' : 'bulb'} size={30} color={isDarkTheme ? "#FFF" : "#333" } />}
       />
     </View>
   );

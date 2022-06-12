@@ -1,10 +1,15 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-  container: {
+  containerForm: {
     backgroundColor: '#C3B1E1',
     alignItems: 'center',
     justifyContent: 'space-evenly',
+  },  
+  container: {
+    flex:1,
+    backgroundColor: '#C3B1E1',
+    justifyContent: 'center',
   },
   input: {
     width: '80%',
