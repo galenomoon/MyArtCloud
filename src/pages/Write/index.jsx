@@ -1,6 +1,6 @@
 
 import { View, TextInput, Text, Keyboard } from 'react-native';
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 //styles
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -15,9 +15,11 @@ import MyTouchableOpacity from '../../../utils/MyTouchableOpacity';
 
 //firebase
 import firebase from '../../firebaseConection';
+import Divider from '../../../utils/Divider';
 
 export default function Write() {
   const route = useRoute();
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [title, setTitle] = useState(route.params?.item?.title ?? '');
   const [text, setText] = useState(route.params?.item?.text ?? '');
   const [key, setKey] = useState(route.params?.item?.key ?? '');
@@ -46,32 +48,60 @@ export default function Write() {
     navigation.navigate('Home');
   }
 
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardVisible(true); // or some other action
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardVisible(false); // or some other action
+      }
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
+
   return (
     <View style={styles.container}>
+      <View style={styles.header}>
+        <Icon name="back" size={35} color="#FFF"/>
+      </View>
       <View style={stylesForm.container}>
-        <Text style={stylesForm.label}>Título:</Text>
         <TextInput
           onChangeText={(text) => setTitle(text)}
           onSubmitEditing={() => focusTextInput()}
           style={stylesForm.titleInput}
+          placeholder="Titulo"
           autoFocus={true}
           value={title}
         />
-        <Text style={stylesForm.label}>Texto:</Text>
+        <Divider />
         <TextInput
           ref={inputRef}
           onChangeText={(text) => setText(text)}
           onPress={() => Keyboard.open()}
+          placeholder="Digite seu Texto Aqui"
           value={text}
           editable={true}
           multiline={true}
           style={stylesForm.inputArea}
         />
-        <MyTouchableOpacity
-          fn={() => saveNote()}
-          style={stylesForm.saveBtn}
-          childreen={<Icon name='save' size={35} color="#FFF" />}
-        />
+        {
+          !isKeyboardVisible &&
+          <MyTouchableOpacity
+            fn={() => saveNote()}
+            style={stylesForm.saveBtn}
+            childreen={<Icon name='save' size={35} color="#FFF" />}
+          />
+        }
       </View>
     </View>
   );

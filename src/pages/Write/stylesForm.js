@@ -2,25 +2,25 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   inputArea: {
-    borderWidth: 1,
+    // borderWidth: 1,
     flex: 1,
     height: 200,
     padding: 10,
     marginBottom: 10,
     borderRadius: 2,
     fontSize: 20,
-    backgroundColor: '#fff',
+    // backgroundColor: '#eee',
     textAlignVertical: 'top'
   },
   titleInput: {
     width: '100%',
     borderColor: '#000',
-    borderWidth: 1,
+    // borderWidth: 1,
     padding: 10,
     marginBottom: 10,
     borderRadius: 2,
-    fontSize: 20,
-    backgroundColor: '#fff',
+    fontSize: 30,
+    // backgroundColor: '#eee',
   },
   container: {
     flex: 1,

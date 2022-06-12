@@ -12,10 +12,7 @@ export default function App() {
   const Stack = createNativeStackNavigator();
 
   const tabConfig = {
-    "login": {
-      headerShown: false
-    },
-    "home": {
+    "default": {
       headerShown: false
     },
     "write": {
@@ -30,9 +27,9 @@ export default function App() {
     <NavigationContainer>
       <StatusBar animated={true} backgroundColor={"#1fa3b8"} style="light" />
       <Stack.Navigator>
-        <Stack.Screen name="Login" options={tabConfig.login} component={Login} />
-        <Stack.Screen name="Home" options={tabConfig.home} component={Home} />
-        <Stack.Screen name="Write" options={tabConfig.write} component={Write} />
+        <Stack.Screen name="Login" options={tabConfig.default} component={Login} />
+        <Stack.Screen name="Home" options={tabConfig.default} component={Home} />
+        <Stack.Screen name="Write" options={tabConfig.default} component={Write} />
       </Stack.Navigator>
     </NavigationContainer>
   );
