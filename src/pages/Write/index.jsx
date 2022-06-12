@@ -31,6 +31,21 @@ export default function Write() {
 
   const back = () => navigation.navigate('Home');
 
+  const backWithoutSave = () => {
+    Alert.alert(
+      "Você tem alterações não salvas", "Deseja realmente sair sem salvar?",
+      [{
+        text: "Cancelar", onPress: () => { }
+      },
+      {
+        text: "Sair sem salvar", onPress: async () => back()
+      },
+      {
+        text: "Sair e salvar", onPress: async () => saveNote()
+      }]
+    );
+  }
+
   async function saveNote() {
     if (key) {
       await firebase.database().ref(`users/${userKey}/notes/${key}`).update({ title, text });
@@ -50,7 +65,6 @@ export default function Write() {
     back()
   }
 
-
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow', () => setKeyboardVisible(true)
@@ -67,7 +81,7 @@ export default function Write() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Icon onPress={() => back()} style={{ margin: 10 }} name="arrow-back-outline" size={35} color="#aaa" />
+        <Icon onPress={() => backWithoutSave()} style={{ margin: 10 }} name="arrow-back-outline" size={35} color="#aaa" />
       </View>
       <View style={stylesForm.container}>
         <TextInput

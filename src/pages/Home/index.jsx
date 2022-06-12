@@ -3,7 +3,7 @@ import { Text, View, FlatList, Alert } from 'react-native';
 
 //utils
 import MyTouchableOpacity from '../../../utils/MyTouchableOpacity';
-import texts from '../../../utils/texts'
+
 // styles
 import styles from './styles';
 import Icon from 'react-native-vector-icons/Ionicons';
