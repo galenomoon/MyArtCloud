@@ -80,7 +80,7 @@ export default function Home() {
       fn={() => navigation.navigate("Write", { item, userKey })}
       onLongPress={() => deleteNote(item.key)}
       delayLongPress={600}
-      childreen={<PreviewText text={item} />}
+      children={<PreviewText text={item} />}
     />
   )
 
@@ -100,12 +100,12 @@ export default function Home() {
       <MyTouchableOpacity
         fn={() => navigation.navigate("Write", { userKey: userKey })}
         style={styles.newNoteBtn}
-        childreen={<Icon name='add-outline' size={50} color="#FFF" />}
+        children={<Icon name='add-outline' size={50} color="#FFF" />}
       />
       <MyTouchableOpacity
         fn={() => logout()}
         style={styles.logoutBtn}
-        childreen={<Icon name='log-out' size={50} color="#FFF" />}
+        children={<Icon name='log-out' size={50} color="#FFF" />}
       />
 
     </SafeAreaView>

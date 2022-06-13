@@ -114,7 +114,7 @@ export default function Write() {
         <MyTouchableOpacity
           fn={() => saveNote(key)}
           style={styles.saveBtn}
-          childreen={<Icon name='save' size={35} color="#FFF" />}
+          children={<Icon name='save' size={35} color="#FFF" />}
         />
       }
     </>

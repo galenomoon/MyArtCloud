@@ -99,14 +99,14 @@ export default function Login() {
         }
         <MyTouchableOpacity
           fn={() => isCreateAccount ? createAccount() : login()}
-          childreen={<Text style={styles.buttonText}>{isCreateAccount ? "Criar Conta" : "Entrar"}</Text>}
+          children={<Text style={styles.buttonText}>{isCreateAccount ? "Criar Conta" : "Entrar"}</Text>}
           style={styles.button}
         />
         <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
           <Text>{isCreateAccount ? "Já" : "Não"} tem uma conta? </Text>
           <MyTouchableOpacity
             fn={() => setIsCreateAccount(!isCreateAccount)}
-            childreen={<Text style={{ color: "blue" }}>Clique aqui</Text>}
+            children={<Text style={{ color: "blue" }}>Clique aqui</Text>}
           />
         </View>
       </View>

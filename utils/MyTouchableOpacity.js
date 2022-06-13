@@ -1,13 +1,13 @@
 import { TouchableOpacity } from "react-native";
 
-const MyTouchableOpacity = ({ childreen, fn, style, onLongPress, delayLongPress }) =>
+const MyTouchableOpacity = ({ children, fn, style, onLongPress, delayLongPress }) =>
   <TouchableOpacity
     style={style}
     onPress={() => fn && fn()}
     onLongPress={() => onLongPress && onLongPress()}
     delayLongPress={delayLongPress && delayLongPress}
   >
-    {childreen}
+    {children}
   </TouchableOpacity>;
 
 export default MyTouchableOpacity;
