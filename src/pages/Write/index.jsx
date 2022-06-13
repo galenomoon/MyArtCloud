@@ -24,6 +24,7 @@ export default function Write() {
   const [userKey, setUserKey] = useState(route.params?.userKey);
   const [title, setTitle] = useState(route.params?.item?.title ?? '');
   const [text, setText] = useState(route.params?.item?.text ?? '');
+  const [hasModified, setHasModified] = useState(true);
   const [key, setKey] = useState(route.params?.item?.key ?? '');
 
   useEffect(() => {
@@ -38,6 +39,11 @@ export default function Write() {
       keyboardDidShowListener.remove();
     };
   }, []);
+
+  useEffect(() => {
+    const initialValue = {title: route.params?.item?.title ?? '', text: route.params?.item?.text ?? ''};
+    title !== initialValue.title || text !== initialValue.text ? setHasModified(true) : setHasModified(false);
+  }, [title, text]);
 
   const focusTextInput = () => inputRef.current.focus()
 
@@ -73,7 +79,6 @@ export default function Write() {
       })
       back()
     }
-
   }
 
   return (
@@ -81,7 +86,8 @@ export default function Write() {
       <ScrollView showsVerticalScrollIndicator={false} style={styles.scroll}>
         <SafeAreaView style={styles.container}>
           <View style={styles.header}>
-            <Icon onPress={() => backWithoutSave(key)} name="arrow-back-outline" size={35} color="#aaa" />
+            <Icon onPress={() => hasModified ? backWithoutSave(key) : back()} name="arrow-back-outline" size={35} color="#888" />
+            {<Icon name={`lock${hasModified ? "-closed" : "-open"}`} size={25} color="#888" style={styles.close} />}
           </View>
           <View style={styles.containerForm}>
             <TextInput

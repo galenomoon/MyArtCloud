@@ -34,7 +34,6 @@ export default function Login() {
 
   const saveUserKeyInAsyncStorage = (userKey) => AsyncStorage.setItem("isUserLogged", userKey)
 
-
   async function createAccount() {
     if (password !== confirmPassword) {
       Alert.alert('Senhas não conferem');
@@ -83,19 +82,23 @@ export default function Login() {
           autoCapitalize="none"
           placeholder="E-mail"
         />
-        <TextInput secureTextEntry={true}
+        <TextInput
           value={password}
+          secureTextEntry={true}
           onChangeText={(text) => setPassword(text)}
           style={styles.input}
           placeholder="Senha"
         />
         {isCreateAccount &&
-          <TextInput secureTextEntry={true}
-            value={confirmPassword}
-            onChangeText={(text) => setConfirmPassword(text)}
-            style={styles.input}
-            placeholder="Confirme sua Senha"
-          />
+          <>
+            <TextInput
+              value={confirmPassword}
+              secureTextEntry={true}
+              onChangeText={(text) => setConfirmPassword(text)}
+              style={styles.input}
+              placeholder="Confirme sua Senha"
+            />
+          </>
         }
         <MyTouchableOpacity
           fn={() => isCreateAccount ? createAccount() : login()}
