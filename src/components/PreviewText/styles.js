@@ -20,6 +20,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 5,
   },
+  lastUpdate: {
+    fontSize: 12,
+    color: '#aaa',
+  },
+  rightContainer: {
+    justifyContent: 'flex-end',
+    alignItems: 'end',
+  },
   text: {
     fontSize: 20,
   },

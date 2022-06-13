@@ -23,11 +23,12 @@ export default function Write() {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [userKey, setUserKey] = useState(route.params?.userKey);
   const [isLocked, setIsLocked] = useState(false);
-  const [lastModified, setLastModified] = useState(route.params?.item?.lastModified ?? '');
+  const [lastUpdate, setLastUpdate] = useState(route.params?.item?.lastUpdate ?? '');
   const [title, setTitle] = useState(route.params?.item?.title ?? '');
   const [text, setText] = useState(route.params?.item?.text ?? '');
   const [hasModified, setHasModified] = useState(true);
   const [key, setKey] = useState(route.params?.item?.key ?? '');
+  const getNow = () => new Date().toLocaleString("pt-BR");
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -68,7 +69,7 @@ export default function Write() {
 
   async function saveNote() {
     if (key) {
-      await firebase.database().ref(`users/${userKey}/notes/${key}`).update({ title, text })
+      await firebase.database().ref(`users/${userKey}/notes/${key}`).update({ title, text, lastUpdate: getNow() });
     }
     else {
       let note = firebase.database().ref(`users/${userKey}/notes`)
@@ -77,7 +78,7 @@ export default function Write() {
       await note.child(key).set({
         title: title === '' ? "Nova Anotação" : title,
         text: text,
-        lastUpdate: firebase.database.ServerValue.TIMESTAMP,
+        lastUpdate: getNow(),
       })
     }
     back()
@@ -89,7 +90,7 @@ export default function Write() {
         <SafeAreaView style={styles.container}>
           <View style={styles.header}>
             <Icon onPress={() => hasModified ? backWithoutSave(key) : back()} name="arrow-back-outline" size={35} color="#888" />
-            <Text></Text>
+            {lastUpdate && <Text style={{ color: "#555" }}>Última atualização: {lastUpdate}</Text>}
             {<Icon name={`lock${isLocked ? "-closed" : "-open"}`} size={25} color={`${isLocked ? "#888" : "#aaa"}`} style={styles.close} />}
           </View>
           <View style={styles.containerForm}>
