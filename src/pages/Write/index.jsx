@@ -1,5 +1,5 @@
 
-import { SafeAreaView, View, TextInput, Keyboard, Alert } from 'react-native';
+import { SafeAreaView, View, TextInput, ScrollView, Keyboard, Alert } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
 
 //styles
@@ -77,39 +77,46 @@ export default function Write() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Icon onPress={() => backWithoutSave(key)} name="arrow-back-outline" size={35} color="#aaa" />
-      </View>
-      <View style={styles.containerForm}>
-        <TextInput
-          onChangeText={(text) => setTitle(text)}
-          onSubmitEditing={() => focusTextInput()}
-          style={styles.titleInput}
-          placeholder="Titulo"
-          autoFocus={true}
-          value={title}
+    <>
+      <ScrollView showsVerticalScrollIndicator={false} style={styles.scroll}>
+        <SafeAreaView style={styles.container}>
+          <View style={styles.header}>
+            <Icon onPress={() => backWithoutSave(key)} name="arrow-back-outline" size={35} color="#aaa" />
+          </View>
+          <View style={styles.containerForm}>
+            <TextInput
+              onChangeText={(text) => setTitle(text)}
+              onSubmitEditing={() => focusTextInput()}
+              style={styles.titleInput}
+              placeholder="Titulo"
+              autoFocus={true}
+              multiline={true}
+
+              value={title}
+            />
+            <Divider />
+            <TextInput
+              ref={inputRef}
+              onChangeText={(text) => setText(text)}
+              onPress={() => Keyboard.open()}
+              placeholder="Digite seu Texto Aqui"
+              value={text}
+              editable={true}
+              scrollEnabled={false}
+              multiline={true}
+              style={styles.inputArea}
+            />
+          </View>
+        </SafeAreaView>
+      </ScrollView>
+      {
+        !isKeyboardVisible &&
+        <MyTouchableOpacity
+          fn={() => saveNote(key)}
+          style={styles.saveBtn}
+          childreen={<Icon name='save' size={35} color="#FFF" />}
         />
-        <Divider />
-        <TextInput
-          ref={inputRef}
-          onChangeText={(text) => setText(text)}
-          onPress={() => Keyboard.open()}
-          placeholder="Digite seu Texto Aqui"
-          value={text}
-          editable={true}
-          multiline={true}
-          style={styles.inputArea}
-        />
-        {
-          !isKeyboardVisible &&
-          <MyTouchableOpacity
-            fn={() => saveNote(key)}
-            style={styles.saveBtn}
-            childreen={<Icon name='save' size={35} color="#FFF" />}
-          />
-        }
-      </View>
-    </SafeAreaView>
+      }
+    </>
   );
 }

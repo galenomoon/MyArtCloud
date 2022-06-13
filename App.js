@@ -11,25 +11,13 @@ import Write from './src/pages/Write';
 export default function App() {
   const Stack = createNativeStackNavigator();
 
-  const tabConfig = {
-    "default": {
-      headerShown: false
-    },
-    "write": {
-      headerTitle: "",
-      headerStyle: {
-        height: 40
-      }
-    }
-  }
-
   return (
     <NavigationContainer>
       <StatusBar animated={true} backgroundColor={"#1fa3b8"} style="light" />
       <Stack.Navigator>
-        <Stack.Screen name="Login" options={tabConfig.default} component={Login} />
-        <Stack.Screen name="Home" options={tabConfig.default} component={Home} />
-        <Stack.Screen name="Write" options={tabConfig.default} component={Write} />
+        <Stack.Screen name="Login" options={{ headerShown: false }} component={Login} />
+        <Stack.Screen name="Home" options={{ headerShown: false }} component={Home} />
+        <Stack.Screen name="Write" options={{ headerShown: false }} component={Write} />
       </Stack.Navigator>
     </NavigationContainer>
   );

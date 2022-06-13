@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Text, SafeAreaView, View, FlatList, Alert } from 'react-native';
 
+//asyncStorage
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 //utils
 import MyTouchableOpacity from '../../../utils/MyTouchableOpacity';
 
@@ -53,6 +56,7 @@ export default function Home() {
         onPress: async () => {
           await firebase.auth().signOut();
           navigation.navigate('Login');
+          AsyncStorage.clear()
         }
       }]
     );

@@ -4,14 +4,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    paddingTop: 30,
   },
   header: {
     justifyContent: "center",
     fontWeight: 'bold',
     height: 45,
+    left: 10,
     marginBottom: 10,
-    marginLeft:20,
     width: '100%',
   },
   text: {
@@ -22,15 +22,18 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 5,
     width: '100%',
+    textAlignVertical: 'top',
+
   },
   inputArea: {
     flex: 1,
-    height: 200,
     padding: 10,
     marginBottom: 10,
     borderRadius: 2,
+    height: 900,
     fontSize: 20,
-    textAlignVertical: 'top'
+    textAlignVertical: 'top',
+
   },
   titleInput: {
     width: '100%',
@@ -62,7 +65,7 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'absolute',
     bottom: 20,
-    right: 3,
+    right: 25,
     borderRadius: 100,
     width: 60,
     height: 60,

@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Image, Alert } from "react-native";
+
+//asyncStorage
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //navigation
 import { useNavigation } from '@react-navigation/native';
@@ -23,6 +26,15 @@ export default function Login() {
   const clearForm = () => [setEmail(''), setPassword(''), setConfirmPassword('')]
   const devTest = () => navigation.navigate("Home")
 
+  useEffect(() => {
+    AsyncStorage.getItem("isUserLogged").then(value => {
+      value && navigation.navigate("Home", { userKey: value })
+    });
+  }, [])
+
+  const saveUserKeyInAsyncStorage = (userKey) => AsyncStorage.setItem("isUserLogged", userKey)
+
+
   async function createAccount() {
     if (password !== confirmPassword) {
       Alert.alert('Senhas não conferem');
@@ -39,6 +51,7 @@ export default function Login() {
       firebase.database().ref('users').child(res.user.uid).set({ email: email });
       setIsCreateAccount(false)
       clearForm()
+      saveUserKeyInAsyncStorage(res.user.uid)
     }).catch(error => errorAlert(error));
   }
 
@@ -52,6 +65,7 @@ export default function Login() {
       navigation.navigate("Home", { userKey: res.user.uid });
       Alert.alert('Login realizado com sucesso!');
       clearForm()
+      saveUserKeyInAsyncStorage(res.user.uid)
     }).catch(error => errorAlert(error));
   }
 
