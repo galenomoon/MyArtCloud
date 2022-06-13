@@ -90,7 +90,7 @@ export default function Write() {
         <SafeAreaView style={styles.container}>
           <View style={styles.header}>
             <Icon onPress={() => hasModified ? backWithoutSave(key) : back()} name="arrow-back-outline" size={35} color="#888" />
-            {lastUpdate && <Text style={{ color: "#555" }}>Última atualização: {lastUpdate}</Text>}
+             <Text style={{ color: "#555" }}>{lastUpdate && `Última atualização: ${lastUpdate}`}</Text>
             {<Icon name={`lock${isLocked ? "-closed" : "-open"}`} size={25} color={`${isLocked ? "#888" : "#aaa"}`} style={styles.close} />}
           </View>
           <View style={styles.containerForm}>
@@ -101,7 +101,6 @@ export default function Write() {
               placeholder="Titulo"
               autoFocus={true}
               multiline={true}
-
               value={title}
             />
             <Divider />
