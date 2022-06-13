@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, FlatList, Alert } from 'react-native';
+import { Text, SafeAreaView, View, FlatList, Alert } from 'react-native';
 
 //utils
 import MyTouchableOpacity from '../../../utils/MyTouchableOpacity';
@@ -21,7 +21,6 @@ export default function Home() {
   const route = useRoute();
   const navigation = useNavigation();
   const [notes, setNotes] = useState([]);
-  const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [userKey, setUserKey] = useState(route.params?.userKey)
 
   useEffect(() => {
@@ -76,13 +75,13 @@ export default function Home() {
     <MyTouchableOpacity
       fn={() => navigation.navigate("Write", { item, userKey })}
       onLongPress={() => deleteNote(item.key)}
-      delayLongPress={690}
+      delayLongPress={600}
       childreen={<PreviewText text={item} />}
     />
   )
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {notes.length > 0 ?
         <FlatList
           data={notes}
@@ -104,11 +103,7 @@ export default function Home() {
         style={styles.logoutBtn}
         childreen={<Icon name='log-out' size={50} color="#FFF" />}
       />
-      <MyTouchableOpacity
-        fn={() => setIsDarkTheme(!isDarkTheme)}
-        style={isDarkTheme ? styles.lightBtn : styles.darkBtn}
-        childreen={<Icon name={isDarkTheme ? 'moon' : 'bulb'} size={30} color={isDarkTheme ? "#FFF" : "#333"} />}
-      />
-    </View>
+
+    </SafeAreaView>
   );
 }

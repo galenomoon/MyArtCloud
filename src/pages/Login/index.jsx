@@ -84,7 +84,7 @@ export default function Login() {
           />
         }
         <MyTouchableOpacity
-          fn={() => isCreateAccount ? createAccount() : devTest()}
+          fn={() => isCreateAccount ? createAccount() : login()}
           childreen={<Text style={styles.buttonText}>{isCreateAccount ? "Criar Conta" : "Entrar"}</Text>}
           style={styles.button}
         />

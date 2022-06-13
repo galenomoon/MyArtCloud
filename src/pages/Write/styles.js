@@ -8,11 +8,10 @@ const styles = StyleSheet.create({
   },
   header: {
     justifyContent: "center",
-    alignItems: "flex-start",
-    fontSize: 25,
     fontWeight: 'bold',
     height: 45,
     marginBottom: 10,
+    marginLeft:20,
     width: '100%',
   },
   text: {

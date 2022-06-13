@@ -6,7 +6,7 @@ import styles from './styles';
 //utils
 import Divider from '../../../utils/Divider';
 
-export default function PreviewText({ text, theme }) {
+export default function PreviewText({ text }) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>

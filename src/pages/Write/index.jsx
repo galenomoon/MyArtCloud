@@ -1,5 +1,5 @@
 
-import { View, TextInput, Keyboard } from 'react-native';
+import { SafeAreaView, View, TextInput, Keyboard, Alert } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
 
 //styles
@@ -43,7 +43,7 @@ export default function Write() {
 
   const back = () => navigation.navigate('Home');
 
-  const backWithoutSave = () => {
+  const backWithoutSave = (key) => {
     Alert.alert(
       "Você tem alterações não salvas", "Deseja realmente sair sem salvar?",
       [{
@@ -53,7 +53,7 @@ export default function Write() {
         text: "Sair sem salvar", onPress: async () => back()
       },
       {
-        text: "Sair e salvar", onPress: async () => saveNote()
+        text: "Sair e salvar", onPress: async () => saveNote(key)
       }]
     );
   }
@@ -61,22 +61,25 @@ export default function Write() {
   async function saveNote() {
     if (key) {
       await firebase.database().ref(`users/${userKey}/notes/${key}`).update({ title, text })
-      return;
+      back()
+    }
+    else {
+      let note = firebase.database().ref(`users/${userKey}/notes`)
+      let key = note.push().key;
+
+      await note.child(key).set({
+        title: title === '' ? "Nova Anotação" : title,
+        text: text
+      })
+      back()
     }
 
-    let note = firebase.database().ref(`users/${userKey}/notes`)
-    let key = note.push().key;
-
-    await note.child(key).set({
-      title: title === '' ? "Nova Anotação" : title,
-      text: text
-    })
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Icon onPress={() => backWithoutSave()} style={{ margin: 10 }} name="arrow-back-outline" size={35} color="#aaa" />
+        <Icon onPress={() => backWithoutSave(key)} name="arrow-back-outline" size={35} color="#aaa" />
       </View>
       <View style={styles.containerForm}>
         <TextInput
@@ -101,12 +104,12 @@ export default function Write() {
         {
           !isKeyboardVisible &&
           <MyTouchableOpacity
-            fn={() => saveNote()}
+            fn={() => saveNote(key)}
             style={styles.saveBtn}
             childreen={<Icon name='save' size={35} color="#FFF" />}
           />
         }
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
