@@ -35,6 +35,7 @@ export default function Home() {
             key: child.key,
             title: child.val().title,
             text: child.val().text,
+            lastUpdate: child.val().lastUpdate,
           }
           list.push(data);
         })

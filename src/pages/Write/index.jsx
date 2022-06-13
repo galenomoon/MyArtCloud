@@ -1,5 +1,5 @@
 
-import { SafeAreaView, View, TextInput, ScrollView, Keyboard, Alert } from 'react-native';
+import { SafeAreaView, View, Text, TextInput, ScrollView, Keyboard, Alert } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
 
 //styles
@@ -22,6 +22,8 @@ export default function Write() {
   const navigation = useNavigation();
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [userKey, setUserKey] = useState(route.params?.userKey);
+  const [isLocked, setIsLocked] = useState(false);
+  const [lastModified, setLastModified] = useState(route.params?.item?.lastModified ?? '');
   const [title, setTitle] = useState(route.params?.item?.title ?? '');
   const [text, setText] = useState(route.params?.item?.text ?? '');
   const [hasModified, setHasModified] = useState(true);
@@ -41,7 +43,7 @@ export default function Write() {
   }, []);
 
   useEffect(() => {
-    const initialValue = {title: route.params?.item?.title ?? '', text: route.params?.item?.text ?? ''};
+    const initialValue = { title: route.params?.item?.title ?? '', text: route.params?.item?.text ?? '' };
     title !== initialValue.title || text !== initialValue.text ? setHasModified(true) : setHasModified(false);
   }, [title, text]);
 
@@ -67,7 +69,6 @@ export default function Write() {
   async function saveNote() {
     if (key) {
       await firebase.database().ref(`users/${userKey}/notes/${key}`).update({ title, text })
-      back()
     }
     else {
       let note = firebase.database().ref(`users/${userKey}/notes`)
@@ -75,10 +76,11 @@ export default function Write() {
 
       await note.child(key).set({
         title: title === '' ? "Nova Anotação" : title,
-        text: text
+        text: text,
+        lastUpdate: firebase.database.ServerValue.TIMESTAMP,
       })
-      back()
     }
+    back()
   }
 
   return (
@@ -87,7 +89,8 @@ export default function Write() {
         <SafeAreaView style={styles.container}>
           <View style={styles.header}>
             <Icon onPress={() => hasModified ? backWithoutSave(key) : back()} name="arrow-back-outline" size={35} color="#888" />
-            {<Icon name={`lock${hasModified ? "-closed" : "-open"}`} size={25} color="#888" style={styles.close} />}
+            <Text></Text>
+            {<Icon name={`lock${isLocked ? "-closed" : "-open"}`} size={25} color={`${isLocked ? "#888" : "#aaa"}`} style={styles.close} />}
           </View>
           <View style={styles.containerForm}>
             <TextInput
