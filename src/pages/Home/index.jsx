@@ -8,22 +8,24 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import MyTouchableOpacity from '../../../utils/MyTouchableOpacity';
 
 // styles
+
 import styles from './styles';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 // navigation
 import { useRoute, useNavigation } from '@react-navigation/native';
 
 //components
-import PreviewText from '../../components/PreviewText';
 import CircleButton from '../../components/CircleButton';
+import PreviewText from '../../components/PreviewText';
 
 // firebase
 import firebase from '../../firebaseConection';
+import LoadingScreen from '../../components/LoadingScreen';
 
 export default function Home() {
   const route = useRoute();
   const navigation = useNavigation();
+  const [isLoaded, setIsLoaded] = useState(false);
   const [notes, setNotes] = useState([]);
   const [userKey, setUserKey] = useState(route.params?.userKey)
 
@@ -42,6 +44,7 @@ export default function Home() {
           list.push(data);
         })
         setNotes(list);
+        setIsLoaded(true);
       });
     }
     getNotes();
@@ -78,40 +81,48 @@ export default function Home() {
     );
   }
 
-  const renderItem = ({ item }) => (
-    <MyTouchableOpacity
-      fn={() => navigation.navigate("Write", { item, userKey })}
-      onLongPress={() => deleteNote(item.key)}
-      delayLongPress={600}
-      children={<PreviewText text={item} />}
+  const empty = () => (
+    <View style={{ alignItems: "center" }}>
+      <Text style={styles.emptyText}>Você ainda não tem textos salvos</Text>
+    </View>
+  )
+
+  const allNotes = () => (
+    <FlatList
+      data={notes}
+      keyExtractor={item => item.key}
+      renderItem={({ item }) =>
+        <MyTouchableOpacity
+          fn={() => navigation.navigate("Write", { item, userKey })}
+          onLongPress={() => deleteNote(item.key)}
+          delayLongPress={600}
+          children={<PreviewText text={item} />}
+        />
+      }
     />
   )
 
   return (
     <SafeAreaView style={styles.container}>
-      {notes.length > 0 ?
-        <FlatList
-          data={notes}
-          keyExtractor={item => item.key}
-          renderItem={({ item }) => renderItem({ item })}
-        />
+      {isLoaded ?
+        <>
+          {notes.length > 0 ? allNotes() : empty()}
+          < CircleButton
+            onPress={() => navigation.navigate("Write", { userKey: userKey })}
+            position={"downRight"}
+            btnColor={"#1fa3b8"}
+            icon='add-outline'
+          />
+          <CircleButton
+            onPress={() => logout()}
+            position={"downLeft"}
+            btnColor="#c74444"
+            icon='log-out'
+          />
+        </>
         :
-        <View style={{ alignItems: "center" }}>
-          <Text style={styles.emptyText}>Você ainda não tem textos salvos</Text>
-        </View>
+        <LoadingScreen/>
       }
-      <CircleButton
-        onPress={() => navigation.navigate("Write", { userKey: userKey })}
-        position={"downRight"}
-        btnColor={"#1fa3b8"}
-        icon='add-outline'
-      />
-      <CircleButton
-        onPress={() => logout()}
-        position={"downLeft"}
-        btnColor="#c74444"
-        icon='log-out'
-      />
     </SafeAreaView>
   );
 }
