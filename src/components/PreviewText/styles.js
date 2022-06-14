@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   },
   rightContainer: {
     justifyContent: 'flex-end',
-    alignItems: 'end',
+    alignItems: 'flex-end',
   },
   text: {
     fontSize: 20,

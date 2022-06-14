@@ -16,6 +16,7 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 
 //components
 import PreviewText from '../../components/PreviewText';
+import CircleButton from '../../components/CircleButton';
 
 // firebase
 import firebase from '../../firebaseConection';
@@ -35,6 +36,7 @@ export default function Home() {
             key: child.key,
             title: child.val().title,
             text: child.val().text,
+            isLocked: child.val().isLocked,
             lastUpdate: child.val().lastUpdate,
           }
           list.push(data);
@@ -98,17 +100,18 @@ export default function Home() {
           <Text style={styles.emptyText}>Você ainda não tem textos salvos</Text>
         </View>
       }
-      <MyTouchableOpacity
-        fn={() => navigation.navigate("Write", { userKey: userKey })}
-        style={styles.newNoteBtn}
-        children={<Icon name='add-outline' size={50} color="#FFF" />}
+      <CircleButton
+        onPress={() => navigation.navigate("Write", { userKey: userKey })}
+        position={"downRight"}
+        btnColor={"#1fa3b8"}
+        icon='add-outline'
       />
-      <MyTouchableOpacity
-        fn={() => logout()}
-        style={styles.logoutBtn}
-        children={<Icon name='log-out' size={50} color="#FFF" />}
+      <CircleButton
+        onPress={() => logout()}
+        position={"downLeft"}
+        btnColor="#c74444"
+        icon='log-out'
       />
-
     </SafeAreaView>
   );
 }

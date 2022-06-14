@@ -64,23 +64,7 @@ const styles = StyleSheet.create({
     width: '100%',
     color: '#fff',
     marginHorizontal: 6,
-  },
-  saveBtn: {
-    flex: 1,
-    position: 'absolute',
-    bottom: 20,
-    right: 25,
-    borderRadius: 100,
-    width: 60,
-    height: 60,
-    backgroundColor: '#1fa3b8',
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#171717',
-    shadowOffset: { width: 3, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-  },
+  }
 });
 
 export default styles;

@@ -10,24 +10,26 @@ import styles from './styles';
 import { useRoute, useNavigation } from '@react-navigation/native';
 
 //utils
-import MyTouchableOpacity from '../../../utils/MyTouchableOpacity';
+import CircleButton from '../../components/CircleButton';
 
 //firebase
 import firebase from '../../firebaseConection';
 import Divider from '../../../utils/Divider';
 
 export default function Write() {
-  const route = useRoute();
+  const params = useRoute().params;
+
   const inputRef = useRef(null);
   const navigation = useNavigation();
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-  const [userKey, setUserKey] = useState(route.params?.userKey);
-  const [isLocked, setIsLocked] = useState(false);
-  const [lastUpdate, setLastUpdate] = useState(route.params?.item?.lastUpdate ?? '');
-  const [title, setTitle] = useState(route.params?.item?.title ?? '');
-  const [text, setText] = useState(route.params?.item?.text ?? '');
-  const [hasModified, setHasModified] = useState(true);
-  const [key, setKey] = useState(route.params?.item?.key ?? '');
+  const [beforeChanges, setBeforeChanges] = useState(params?.item ?? null);
+  const [userKey, setUserKey] = useState(params?.userKey);
+  const [isLocked, setIsLocked] = useState(params?.item?.isLocked ?? false);
+  const [lastUpdate, setLastUpdate] = useState(params?.item?.lastUpdate ?? '');
+  const [title, setTitle] = useState(params?.item?.title ?? '');
+  const [text, setText] = useState(params?.item?.text ?? '');
+  const [hasModified, setHasModified] = useState(false);
+  const [key, setKey] = useState(params?.item?.key ?? '');
   const getNow = () => new Date().toLocaleString("pt-BR");
 
   useEffect(() => {
@@ -44,9 +46,21 @@ export default function Write() {
   }, []);
 
   useEffect(() => {
-    const initialValue = { title: route.params?.item?.title ?? '', text: route.params?.item?.text ?? '' };
-    title !== initialValue.title || text !== initialValue.text ? setHasModified(true) : setHasModified(false);
-  }, [title, text]);
+    if (beforeChanges) {
+      if (beforeChanges?.title !== title) {
+        setHasModified(true)
+        return;
+      }
+      if (beforeChanges?.text !== text) {
+        setHasModified(true)
+        return;
+      }
+      if (beforeChanges?.isLocked !== isLocked) {
+        setHasModified(true)
+        return;
+      }
+    }
+  }, [title, text, isLocked]);
 
   const focusTextInput = () => inputRef.current.focus()
 
@@ -69,7 +83,12 @@ export default function Write() {
 
   async function saveNote() {
     if (key) {
-      await firebase.database().ref(`users/${userKey}/notes/${key}`).update({ title, text, lastUpdate: getNow() });
+      await firebase.database().ref(`users/${userKey}/notes/${key}`).update({
+        title,
+        text,
+        lastUpdate: getNow(),
+        isLocked
+      });
     }
     else {
       let note = firebase.database().ref(`users/${userKey}/notes`)
@@ -90,8 +109,8 @@ export default function Write() {
         <SafeAreaView style={styles.container}>
           <View style={styles.header}>
             <Icon onPress={() => hasModified ? backWithoutSave(key) : back()} name="arrow-back-outline" size={35} color="#888" />
-             <Text style={{ color: "#555" }}>{lastUpdate && `Última atualização: ${lastUpdate}`}</Text>
-            {<Icon name={`lock${isLocked ? "-closed" : "-open"}`} size={25} color={`${isLocked ? "#888" : "#aaa"}`} style={styles.close} />}
+            <Text style={{ color: "#555" }}>{lastUpdate && `Última atualização: ${lastUpdate}`}</Text>
+            {<Icon onPress={() => setIsLocked(!isLocked)} name={`lock${isLocked ? "-closed" : "-open"}`} size={25} color={`${isLocked ? "#888" : "#aaa"}`} style={styles.close} />}
           </View>
           <View style={styles.containerForm}>
             <TextInput
@@ -120,10 +139,12 @@ export default function Write() {
       </ScrollView>
       {
         !isKeyboardVisible &&
-        <MyTouchableOpacity
-          fn={() => saveNote(key)}
-          style={styles.saveBtn}
-          children={<Icon name='save' size={35} color="#FFF" />}
+        <CircleButton
+          onPress={() => saveNote(key)}
+          position={"downRight"}
+          sizeIcon={35}
+          btnColor="#1fa3b8"
+          icon='save'
         />
       }
     </>

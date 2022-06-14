@@ -76,7 +76,7 @@ export default function Login() {
           style={{ width: 200, height: 200, marginTop: 20 }}
         />
         <TextInput
-          value={email.toLowerCase()}
+          value={email.toLowerCase().trim()}
           onChangeText={(text) => setEmail(text)}
           style={styles.input}
           autoCapitalize="none"
