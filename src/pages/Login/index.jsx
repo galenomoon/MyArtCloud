@@ -15,14 +15,14 @@ import styles from "./styles";
 
 //utils
 import MyTouchableOpacity from '../../../utils/MyTouchableOpacity';
-import errorAlert from '../../../utils/errorAlert';
 import LoadingScreen from '../../components/LoadingScreen';
+import errorAlert from '../../../utils/errorAlert';
 
 export default function Login() {
   const navigation = useNavigation();
-  const [isLoaded, setIsLoaded] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoaded, setIsLoaded] = useState(true);
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isCreateAccount, setIsCreateAccount] = useState(false);
   const clearForm = () => [setEmail(''), setPassword(''), setConfirmPassword('')]
@@ -62,7 +62,7 @@ export default function Login() {
       Alert.alert('Preencha todos os campos');
       return;
     }
-    
+
     await firebase.auth().signInWithEmailAndPassword(email, password).then(res => {
       navigation.navigate("Home", { userKey: res.user.uid });
       Alert.alert('Login realizado com sucesso!');
@@ -73,8 +73,8 @@ export default function Login() {
   }
 
   return (
-    <View style={styles.container}>
-      {isLoaded ? (
+    isLoaded ? (
+      <View style={styles.container}>
         <View style={styles.containerForm}>
           <Image
             source={require("../../../images/logo.png")}
@@ -118,7 +118,10 @@ export default function Login() {
             />
           </View>
         </View>
-      ) : <LoadingScreen />}
-    </View>
+      </View>
+    ) :
+      <View style={{backgroundColor:"#C3B1E1", width:"100%", height:"100%"}}>
+        <LoadingScreen />
+      </View>
   );
 }

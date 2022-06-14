@@ -8,19 +8,18 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import MyTouchableOpacity from '../../../utils/MyTouchableOpacity';
 
 // styles
-
 import styles from './styles';
 
 // navigation
 import { useRoute, useNavigation } from '@react-navigation/native';
 
 //components
-import CircleButton from '../../components/CircleButton';
 import PreviewText from '../../components/PreviewText';
+import CircleButton from '../../components/CircleButton';
+import LoadingScreen from '../../components/LoadingScreen';
 
 // firebase
 import firebase from '../../firebaseConection';
-import LoadingScreen from '../../components/LoadingScreen';
 
 export default function Home() {
   const route = useRoute();
@@ -81,13 +80,13 @@ export default function Home() {
     );
   }
 
-  const empty = () => (
+  const thereIsNoNote = () => (
     <View style={{ alignItems: "center" }}>
       <Text style={styles.emptyText}>Você ainda não tem textos salvos</Text>
     </View>
   )
 
-  const allNotes = () => (
+  const notesList = () => (
     <FlatList
       data={notes}
       keyExtractor={item => item.key}
@@ -103,26 +102,25 @@ export default function Home() {
   )
 
   return (
-    <SafeAreaView style={styles.container}>
-      {isLoaded ?
-        <>
-          {notes.length > 0 ? allNotes() : empty()}
-          < CircleButton
-            onPress={() => navigation.navigate("Write", { userKey: userKey })}
-            position={"downRight"}
-            btnColor={"#1fa3b8"}
-            icon='add-outline'
-          />
-          <CircleButton
-            onPress={() => logout()}
-            position={"downLeft"}
-            btnColor="#c74444"
-            icon='log-out'
-          />
-        </>
-        :
-        <LoadingScreen/>
-      }
-    </SafeAreaView>
+    isLoaded ?
+      <SafeAreaView style={styles.container}>
+        {notes.length > 0 ? notesList() : thereIsNoNote()}
+        < CircleButton
+          onPress={() => navigation.navigate("Write", { userKey: userKey })}
+          position={"downRight"}
+          btnColor={"#1fa3b8"}
+          icon='add-outline'
+        />
+        <CircleButton
+          onPress={() => logout()}
+          position={"downLeft"}
+          btnColor="#c74444"
+          icon='log-out'
+        />
+      </SafeAreaView>
+      :
+      <View style={{ backgroundColor: "#C3B1E1", width: "100%", height: "100%", alignItems:"center", justifyContent:"center" }}>
+        <LoadingScreen />
+      </View>
   );
 }
