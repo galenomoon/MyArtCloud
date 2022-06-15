@@ -24,7 +24,7 @@ export default function Write() {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [beforeChanges, setBeforeChanges] = useState(params?.item ?? null);
   const [userKey, setUserKey] = useState(params?.userKey);
-  const [isLocked, setIsLocked] = useState(params?.item?.isLocked ?? false);
+  const [isLocked, setIsLocked] = useState(params?.item?.isLocked);
   const [lastUpdate, setLastUpdate] = useState(params?.item?.lastUpdate ?? '');
   const [title, setTitle] = useState(params?.item?.title ?? '');
   const [text, setText] = useState(params?.item?.text ?? '');
