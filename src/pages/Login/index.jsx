@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text, TextInput, Image, Alert } from "react-native";
 
 //asyncStorage
@@ -17,6 +17,7 @@ import styles from "./styles";
 import MyTouchableOpacity from '../../../utils/MyTouchableOpacity';
 import LoadingScreen from '../../components/LoadingScreen';
 import errorAlert from '../../../utils/errorAlert';
+import { AuthContext } from '../../contexts/auth';
 
 export default function Login() {
   const navigation = useNavigation();
@@ -25,14 +26,8 @@ export default function Login() {
   const [isLoaded, setIsLoaded] = useState(true);
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isCreateAccount, setIsCreateAccount] = useState(false);
+  const { ...props } = useContext(AuthContext);
   const clearForm = () => [setEmail(''), setPassword(''), setConfirmPassword('')]
-  const devTest = () => navigation.navigate("Home")
-
-  useEffect(() => {
-    AsyncStorage.getItem("isUserLogged").then(value => {
-      value && navigation.navigate("Home", { userKey: value })
-    });
-  }, [])
 
   const saveUserKeyInAsyncStorage = (userKey) => AsyncStorage.setItem("isUserLogged", userKey)
 
@@ -47,12 +42,14 @@ export default function Login() {
     }
 
     await firebase.auth().createUserWithEmailAndPassword(email, password).then(res => {
-      navigation.navigate("Home", { userKey: res.user.uid });
+      setIsLoaded(false)
+      firebase.database().ref('users').child(res.user.uid).set({ email: email }).catch(error => errorAlert(error));
       Alert.alert('Conta Cadastrada com Sucesso!');
-      firebase.database().ref('users').child(res.user.uid).set({ email: email });
       setIsCreateAccount(false)
       clearForm()
+      setIsLoaded(true)
       saveUserKeyInAsyncStorage(res.user.uid)
+      props.saveInStorage()
     }).catch(error => errorAlert(error));
   }
 
@@ -64,10 +61,10 @@ export default function Login() {
     }
 
     await firebase.auth().signInWithEmailAndPassword(email, password).then(res => {
-      navigation.navigate("Home", { userKey: res.user.uid });
+      saveUserKeyInAsyncStorage(res.user.uid)
+      props.saveInStorage()
       Alert.alert('Login realizado com sucesso!');
       clearForm()
-      saveUserKeyInAsyncStorage(res.user.uid)
     }).catch(error => errorAlert(error));
     setIsLoaded(true)
   }
@@ -120,7 +117,7 @@ export default function Login() {
         </View>
       </View>
     ) :
-      <View style={{backgroundColor:"#C3B1E1", width:"100%", height:"100%"}}>
+      <View style={{ backgroundColor: "#C3B1E1", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}>
         <LoadingScreen />
       </View>
   );
