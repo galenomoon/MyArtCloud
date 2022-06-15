@@ -16,7 +16,7 @@ export default function App() {
       <StatusBar animated={true} backgroundColor={"#1fa3b8"} style="light" />
       <Stack.Navigator>
         <Stack.Screen name="Login" options={{ headerShown: false }} component={Login} />
-        <Stack.Screen name="Home" options={{ headerShown: false }} component={Home} />
+          <Stack.Screen name="Home" options={{ headerShown: false }} component={Home} />
         <Stack.Screen name="Write" options={{ headerShown: false }} component={Write} />
       </Stack.Navigator>
     </NavigationContainer>

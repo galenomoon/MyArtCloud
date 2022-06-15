@@ -20,6 +20,7 @@ import LoadingScreen from '../../components/LoadingScreen';
 
 // firebase
 import firebase from '../../firebaseConection';
+import Drawer from 'react-native-drawer'
 
 export default function Home() {
   const route = useRoute();
@@ -103,23 +104,29 @@ export default function Home() {
 
   return (
     isLoaded ?
-      <SafeAreaView style={styles.container}>
-        {notes.length > 0 ? notesList() : thereIsNoNote()}
-        < CircleButton
-          onPress={() => navigation.navigate("Write", { userKey: userKey })}
-          position={"downRight"}
-          btnColor={"#1fa3b8"}
-          icon='add-outline'
-        />
-        <CircleButton
-          onPress={() => logout()}
-          position={"downLeft"}
-          btnColor="#c74444"
-          icon='log-out'
-        />
-      </SafeAreaView>
+      <Drawer
+        type="static"
+        openDrawerOffset={100}
+
+      >
+        <SafeAreaView style={styles.container}>
+          {notes.length > 0 ? notesList() : thereIsNoNote()}
+          < CircleButton
+            onPress={() => navigation.navigate("Write", { userKey: userKey })}
+            position={"downRight"}
+            btnColor={"#1fa3b8"}
+            icon='add-outline'
+          />
+          <CircleButton
+            onPress={() => logout()}
+            position={"downLeft"}
+            btnColor="#c74444"
+            icon='log-out'
+          />
+        </SafeAreaView>
+      </Drawer>
       :
-      <View style={{ backgroundColor: "#C3B1E1", width: "100%", height: "100%", alignItems:"center", justifyContent:"center" }}>
+      <View style={{ backgroundColor: "#C3B1E1", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}>
         <LoadingScreen />
       </View>
   );
