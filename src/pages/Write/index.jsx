@@ -1,6 +1,6 @@
 
 import { SafeAreaView, View, Text, TextInput, ScrollView, Keyboard, Alert } from 'react-native';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 
 //styles
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -9,27 +9,69 @@ import styles from './styles';
 //navigation
 import { useRoute, useNavigation } from '@react-navigation/native';
 
-//utils
+//components
 import CircleButton from '../../components/CircleButton';
 
 //firebase
 import firebase from '../../firebaseConection';
 import Divider from '../../../utils/Divider';
 
+//context
+import { AuthContext } from '../../contexts/auth';
+
 export default function Write() {
-  const params = useRoute().params;
+  const params = useRoute().params.item
+  const { ...props } = useContext(AuthContext);
+
+  console.log("WRITE ===>", params)
+  console.log("TEST ===>", {
+  //   title: params.title,
+  //   text: params.text,
+  //   isLocked: params.isLocked,
+  //   lastUpdate: params.lastUpdate,
+  //   beforeChanges: params,
+    key: params?.key,
+  //   userKey: props.userKey.value
+  })
 
   const inputRef = useRef(null);
   const navigation = useNavigation();
+  const [userKey, setUserKey] = useState(props.userKey.value)
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-  const [beforeChanges, setBeforeChanges] = useState(params?.item ?? null);
-  const [userKey, setUserKey] = useState(params?.userKey);
-  const [isLocked, setIsLocked] = useState(params?.item?.isLocked ?? false);
-  const [lastUpdate, setLastUpdate] = useState(params?.item?.lastUpdate ?? '');
-  const [title, setTitle] = useState(params?.item?.title ?? '');
-  const [text, setText] = useState(params?.item?.text ?? '');
+  const [beforeChanges, setBeforeChanges] = useState(params);
+  const [isLocked, setIsLocked] = useState(params?.isLocked);
+  const [lastUpdate, setLastUpdate] = useState(params?.lastUpdate);
+  const [title, setTitle] = useState(params?.title);
+  const [text, setText] = useState(params?.text);
   const [hasModified, setHasModified] = useState(false);
-  const [key, setKey] = useState(params?.item?.key ?? '');
+  const [key, setKey] = useState(params?.key ?? '');
+
+  console.log("STATES ===> ",
+  {
+    userKey,
+    isKeyboardVisible,
+    beforeChanges,
+    isLocked,
+    lastUpdate,
+    text,
+    title,
+    hasModified,
+    key
+
+  }
+  )
+
+
+  const clearFields = () => {
+    setTitle('');
+    setText('');
+    setKey('');
+    setLastUpdate('');
+    setBeforeChanges(null);
+    setHasModified(false);
+    setIsLocked(false);
+  }
+
   const getNow = () => new Date().toLocaleString("pt-BR");
 
   useEffect(() => {
@@ -64,7 +106,7 @@ export default function Write() {
 
   const focusTextInput = () => inputRef.current.focus()
 
-  const back = () => navigation.navigate('Home');
+  const back = () => [navigation.navigate('Home'), clearFields()]
 
   const backWithoutSave = (key) => {
     Alert.alert(
@@ -81,7 +123,7 @@ export default function Write() {
     );
   }
 
-  async function saveNote() {
+  async function saveNote(key) {
     if (key) {
       await firebase.database().ref(`users/${userKey}/notes/${key}`).update({
         title,

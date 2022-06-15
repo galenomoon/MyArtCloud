@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Text, SafeAreaView, View, FlatList, Alert } from 'react-native';
 
 //asyncStorage
@@ -11,7 +11,7 @@ import MyTouchableOpacity from '../../../utils/MyTouchableOpacity';
 import styles from './styles';
 
 // navigation
-import { useRoute, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 //components
 import PreviewText from '../../components/PreviewText';
@@ -20,13 +20,14 @@ import LoadingScreen from '../../components/LoadingScreen';
 
 // firebase
 import firebase from '../../firebaseConection';
+import { AuthContext } from '../../contexts/auth';
 
 export default function Home() {
-  const route = useRoute();
   const navigation = useNavigation();
   const [isLoaded, setIsLoaded] = useState(false);
   const [notes, setNotes] = useState([]);
-  const [userKey, setUserKey] = useState(route.params?.userKey)
+  const { ...props } = useContext(AuthContext)
+  const [userKey, setUserKey] = useState(props.userKey.value)
 
   useEffect(() => {
     function getNotes() {
@@ -37,7 +38,7 @@ export default function Home() {
             key: child.key,
             title: child.val().title,
             text: child.val().text,
-            isLocked: child.val().isLocked,
+            isLocked: child.val().isLocked || false,
             lastUpdate: child.val().lastUpdate,
           }
           list.push(data);
@@ -49,23 +50,6 @@ export default function Home() {
     getNotes();
   }, []);
 
-  function logout() {
-    Alert.alert(
-      "Sair", "Deseja realmente sair?",
-      [{
-        text: "Cancelar",
-        onPress: () => { }
-      },
-      {
-        text: "Sair",
-        onPress: async () => {
-          await firebase.auth().signOut();
-          navigation.navigate('Login');
-          AsyncStorage.clear()
-        }
-      }]
-    );
-  }
 
   async function deleteNote(key) {
     Alert.alert("Deletar nota", "Deseja realmente deletar esse texto?",
@@ -92,7 +76,12 @@ export default function Home() {
       keyExtractor={item => item.key}
       renderItem={({ item }) =>
         <MyTouchableOpacity
-          fn={() => navigation.navigate("Write", { item, userKey })}
+          fn={() =>
+            [navigation.navigate("Write", { item }),
+            console.log("---------------------"),
+            console.log("HOME ===>",item)
+          ]
+          }
           onLongPress={() => deleteNote(item.key)}
           delayLongPress={600}
           children={<PreviewText text={item} />}
@@ -112,14 +101,14 @@ export default function Home() {
           icon='add-outline'
         />
         <CircleButton
-          onPress={() => logout()}
+          onPress={() => props.logout()}
           position={"downLeft"}
           btnColor="#c74444"
           icon='log-out'
         />
       </SafeAreaView>
       :
-      <View style={{ backgroundColor: "#C3B1E1", width: "100%", height: "100%", alignItems:"center", justifyContent:"center" }}>
+      <View style={{ backgroundColor: "#C3B1E1", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}>
         <LoadingScreen />
       </View>
   );

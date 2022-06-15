@@ -1,25 +1,24 @@
-//react-navigation
+import React from 'react'
+
+//navigation
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+//routes
+import Routes from './src/routes'
+
+//styles
 import { StatusBar } from 'expo-status-bar';
 
-//components
-import Login from './src/pages/Login';
-import Home from './src/pages/Home';
-import Write from './src/pages/Write';
+//context
+import AuthProvider from './src/contexts/auth'
 
 export default function App() {
-  const Stack = createNativeStackNavigator();
-
   return (
     <NavigationContainer>
-      <StatusBar animated={true} backgroundColor={"#1fa3b8"} style="light" />
-      <Stack.Navigator>
-        <Stack.Screen name="Login" options={{ headerShown: false }} component={Login} />
-        <Stack.Screen name="Home" options={{ headerShown: false }} component={Home} />
-        <Stack.Screen name="Write" options={{ headerShown: false }} component={Write} />
-      </Stack.Navigator>
+      <AuthProvider>
+        <StatusBar animated={true} backgroundColor={"#1fa3b8"} style="light" />
+        <Routes />
+      </AuthProvider>
     </NavigationContainer>
-  );
+  )
 }
-
