@@ -26,6 +26,7 @@ export default function Home() {
   const route = useRoute();
   const navigation = useNavigation();
   const [isLoaded, setIsLoaded] = useState(false);
+  const [drawer, setDrawer] = useState(null);
   const [notes, setNotes] = useState([]);
   const [userKey, setUserKey] = useState(route.params?.userKey)
 
@@ -101,30 +102,33 @@ export default function Home() {
       }
     />
   )
+  console.log(drawer)
 
   return (
     isLoaded ?
-      <Drawer
-        type="static"
-        openDrawerOffset={100}
-
-      >
-        <SafeAreaView style={styles.container}>
-          {notes.length > 0 ? notesList() : thereIsNoNote()}
-          < CircleButton
-            onPress={() => navigation.navigate("Write", { userKey: userKey })}
-            position={"downRight"}
-            btnColor={"#1fa3b8"}
-            icon='add-outline'
-          />
-          <CircleButton
-            onPress={() => logout()}
-            position={"downLeft"}
-            btnColor="#c74444"
-            icon='log-out'
-          />
-        </SafeAreaView>
-      </Drawer>
+      <>
+        <Drawer
+          openDrawerOffset={100}
+          ref={(ref) => setDrawer(ref)}
+          open={true}
+          content={
+            <SafeAreaView style={styles.container}>
+              {notes.length > 0 ? notesList() : thereIsNoNote()}
+              < CircleButton
+                onPress={() => navigation.navigate("Write", { userKey: userKey })}
+                position={"downRight"}
+                btnColor={"#1fa3b8"}
+                icon='add-outline'
+              />
+              <CircleButton
+                onPress={() => logout()}
+                position={"downLeft"}
+                btnColor="#c74444"
+                icon='log-out'
+              />
+            </SafeAreaView>
+          } />
+      </>
       :
       <View style={{ backgroundColor: "#C3B1E1", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}>
         <LoadingScreen />
